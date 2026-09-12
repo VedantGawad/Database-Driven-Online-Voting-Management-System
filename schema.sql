@@ -1,0 +1,53 @@
+-- Create the database
+CREATE DATABASE voting_system;
+USE voting_system;
+
+-- 1. ADMIN Table
+CREATE TABLE ADMIN (
+    Admin_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Username VARCHAR(50) NOT NULL,
+    Password VARCHAR(255) NOT NULL
+);
+
+-- 2. VOTERS Table
+CREATE TABLE VOTERS (
+    Voter_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    Password VARCHAR(255) NOT NULL,
+    Phone VARCHAR(15),
+    Age INT,
+    Has_Voted BOOLEAN DEFAULT FALSE
+);
+
+-- 3. ELECTION Table
+CREATE TABLE ELECTION (
+    Election_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Election_Name VARCHAR(150) NOT NULL,
+    Start_Date DATE,
+    End_Date DATE,
+    Status VARCHAR(20)
+);
+
+-- 4. CANDIDATES Table
+CREATE TABLE CANDIDATES (
+    Candidate_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    Age INT,
+    Party VARCHAR(100) NOT NULL,
+    Symbol VARCHAR(50),
+    Election_ID INT,
+    FOREIGN KEY (Election_ID) REFERENCES ELECTION(Election_ID)
+);
+
+-- 5. VOTES Table
+CREATE TABLE VOTES (
+    Vote_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Voter_ID INT NOT NULL,
+    Candidate_ID INT NOT NULL,
+    Election_ID INT NOT NULL,
+    Vote_Time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (Voter_ID) REFERENCES VOTERS(Voter_ID),
+    FOREIGN KEY (Candidate_ID) REFERENCES CANDIDATES(Candidate_ID),
+    FOREIGN KEY (Election_ID) REFERENCES ELECTION(Election_ID)
+);
